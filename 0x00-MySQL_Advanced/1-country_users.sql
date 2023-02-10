@@ -8,15 +8,15 @@
 -- If the table already exists, your script should not fail
 -- Your script can be executed on any database
 
-DELIMETER ##
+DELIMITER ## ;
 CREATE PROCEDURE table_users()
 BEGIN
-	CREATE TABLE IF NOT EXISTS users_tab (
-		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		email CHAR(255) NOT NULL UNIQUE,
-		name CHAR(255),
-		COUNTRY ENUM('US', 'CO', 'TN') NOT NULL DEFAULT 'US'
-		);
+CREATE TABLE IF NOT EXISTS users_tab (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+email CHAR(255) NOT NULL UNIQUE,
+name CHAR(255),
+COUNTRY ENUM('US', 'CO', 'TN') NOT NULL DEFAULT 'US'
+);
 END##
-DELIMITER ;
-
+-- execute the below to resume the use of ;
+DELIMITER;##
