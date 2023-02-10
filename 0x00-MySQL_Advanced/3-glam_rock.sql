@@ -5,7 +5,7 @@
 -- You should use attributes formed and split for computing the lifespan
 -- Your script can be executed on any database
 
-SELECT band_name, (formed / split) lifespan
-FROM metal_bands
-WHERE main_style = 'Glam rock'
-ORDER BY lifespanf DESC
+SELECT band_name, IFNULL(split, 2023) - IFNULL(formed, 0) lifespan
+    FROM metal_bands
+    WHERE style LIKE '%Glam rock%'
+    ORDER BY lifespan DESC;
