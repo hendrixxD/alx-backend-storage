@@ -43,7 +43,7 @@ class Cache:
         if fn:
             return fn(data)
         return data
-    
+
     def get_str(self, key: str) -> str:
         """return args key"""
         return self.get(key, str)
