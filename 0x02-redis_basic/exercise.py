@@ -2,7 +2,7 @@
 """
 writing strings to redis
 """
-
+import functools
 import redis
 from redis.typing import Union
 import uuid
@@ -16,11 +16,21 @@ class Cache:
         """
         redis: a private attribute
         """
-        self._redis = redis.Redis()
+        self._redis = redis.Redis(host="localhost", port=6379, db=0)
 
         # flush instance
         self._redis.flushdb
 
+    @staticmethod
+    def count_calls(fn: Callable) -> Callable:
+        @functools.wraps(fn)
+        def wrapped(self, *args, **kwargs):
+            key = fn.__qualname__
+            self._calls.incr(key)
+            return fn(self, *args, **kwargs)
+        return wrapped
+
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         data: returns a union of data types
@@ -45,9 +55,15 @@ class Cache:
         return data
 
     def get_str(self, key: str) -> str:
-        """return args key"""
-        return self.get(key, str)
+        """parametrize Cache.get with correct conversion function"""
+        
+        return self._redis.get(key).decode('utf-8')
 
     def get_int(self, key: str) -> int:
-        """args: key"""
-        return self.get(key, int)
+        """parametrize Cache.get with correct conversion function"""
+        
+        val = self._redis.get(key)
+        try:
+            val = int(val.decode('utf-8'))
+        except ValueError:
+            return value
