@@ -1,0 +1,29 @@
+#!/bin/bash
+
+redisurl="http://download.redis.io/redis-stable.tar.gz"
+
+curl -s -o redis-stable.tar.gz $redisurl
+
+sudo su root
+
+mkdir -p /usr/local/lib/
+
+chmod a+w /usr/local/lib/
+
+tar -C /usr/local/lib/ -xzf redis-stable.tar.gz
+
+rm redis-stable.tar.gz
+
+cd /usr/local/lib/redis-stable/
+
+make && make install
+
+#confirm path
+redis-cli --version
+
+#If your shell can’t find redis-cli, check to make sure that /usr/local/bin/ is on your PATH environment variable, and add it if not.
+
+#In addition to redis-cli, make install actually leads to a handful of different executable files (and one symlink) being placed at /usr/local/bin/:
+
+# A snapshot of executables that come bundled with Redis
+#ls -hFG /usr/local/bin/redis-* | sort
