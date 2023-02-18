@@ -78,7 +78,7 @@ class Cache:
         self._redis = redis.Redis(host="localhost", port=6379, db=0)
 
         # flush instance
-        self._redis.flushdb
+        self._redis.flushdb()
 
     @call_history
     @count_calls
