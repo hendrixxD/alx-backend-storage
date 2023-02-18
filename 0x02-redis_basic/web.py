@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""
-implementing an expiring web cache and tracker
-"""
+""" Module for Implementing an expiring web cache and tracker """
 
 from functools import wraps
 import redis
-import requests as req
+import requests
 from typing import Callable
 
-rds = redis.Redis()
-"""redis client"""
+reddiss = redis.Redis()
+"""reddis client"""
 
 
 def count_requests(method: Callable) -> Callable:
@@ -19,13 +17,13 @@ def count_requests(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url):
         """ Wrapper for decorator functionality """
-        rds.incr(f"count:{url}")
-        cached_html = rds.get(f"cached:{url}")
+        reddiss.incr(f"count:{url}")
+        cached_html = reddiss.get(f"cached:{url}")
         if cached_html:
             return cached_html.decode('utf-8')
 
         html = method(url)
-        rds.setex(f"cached:{url}", 10, html)
+        reddiss.setex(f"cached:{url}", 10, html)
         return html
 
     return wrapper
@@ -33,12 +31,8 @@ def count_requests(method: Callable) -> Callable:
 
 @count_requests
 def get_page(url: str) -> str:
+    """Uses the requests module to obtain the HTML
+    content of a particular URL and returns it.
     """
-    args:
-        url: str
-    return ->
-    """
-
-    res = req.get(url)
-
-    return res.text
+    req = requests.get(url)
+    return req.text
