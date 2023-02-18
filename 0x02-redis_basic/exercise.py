@@ -5,7 +5,7 @@ writing strings to redis
 from functools import wraps
 import redis
 from typing import Union, Optional, Callable
-from redis.typing import Union
+# from redis.typing import Union
 import uuid
 
 
