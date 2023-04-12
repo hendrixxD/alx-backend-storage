@@ -1,0 +1,2 @@
+// Task 13. Regex filter
+db.school.fin({"name": {$regex: "^Holberton"}})
